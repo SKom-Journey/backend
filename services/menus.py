@@ -51,6 +51,17 @@ def find_by_entities(entities: dict):
         )
     return result
 
+def create_menu(title: str, description: str, img: str, price: int):
+    menu_id = db.get_collection(tb_name).insert_one({"title": title, "description": description, "img": img, "price": price}).inserted_id
+    menu = db.get_collection(tb_name).find_one({"_id": ObjectId(menu_id)})
+    return Menu(
+        id=str(menu['_id']),
+        title=menu['title'],
+        img=menu['img'],
+        price=menu['price'],
+        description=menu['description'],
+    ).model_dump() 
+
 def menu_by_id(id: str):
     data = db.get_collection(tb_name).find_one({"_id": ObjectId(id)})
     return Menu(
@@ -60,6 +71,10 @@ def menu_by_id(id: str):
         price=data['price'],
         img=data['img']
     ).model_dump()
+
+def delete_menu(menu_id: str):
+    delete = db.get_collection(tb_name).delete_one({"_id": ObjectId(menu_id)})
+    return delete.deleted_count
 
 def menus_by_ids(ids: list[str]):
     result = []

@@ -25,6 +25,7 @@ from controllers.update_cart_note_by_id_controller import update_cart_note_by_id
 from controllers.login_admin_controller import login_admin_controller
 from controllers.finish_order_controller import finish_order_controller
 from controllers.delete_user_chats_controller import delete_user_chats_controller
+from controllers.delete_menu_controller import delete_menu_controller
 
 load_dotenv()
 
@@ -95,6 +96,10 @@ def create_qr():
 @app.delete('/qrs/<qr_id>')
 def delete_qr(qr_id: str):
     return delete_qr_controller(qr_id)
+
+@app.delete('/menus//<menu_id>')
+def delete_menu(menu_id: str):
+    return delete_menu_controller(menu_id)
 
 @app.get('/menus')
 def get_menu():
