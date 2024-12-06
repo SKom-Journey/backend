@@ -26,6 +26,7 @@ from controllers.login_admin_controller import login_admin_controller
 from controllers.finish_order_controller import finish_order_controller
 from controllers.delete_user_chats_controller import delete_user_chats_controller
 from controllers.delete_menu_controller import delete_menu_controller
+from controllers.create_menu_controller import create_menu_controller
 
 load_dotenv()
 
@@ -100,6 +101,10 @@ def delete_qr(qr_id: str):
 @app.delete('/menus//<menu_id>')
 def delete_menu(menu_id: str):
     return delete_menu_controller(menu_id)
+
+@app.post('/menus')
+def create_menu():
+    return create_menu_controller(request.get_json())
 
 @app.get('/menus')
 def get_menu():
