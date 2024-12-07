@@ -27,6 +27,8 @@ from controllers.finish_order_controller import finish_order_controller
 from controllers.delete_user_chats_controller import delete_user_chats_controller
 from controllers.delete_menu_controller import delete_menu_controller
 from controllers.create_menu_controller import create_menu_controller
+from controllers.get_all_menus_controller import get_all_menus_controller
+from controllers.update_menu_by_id_controller import update_menu_by_id_controller
 
 load_dotenv()
 
@@ -105,6 +107,14 @@ def delete_menu(menu_id: str):
 @app.post('/menus')
 def create_menu():
     return create_menu_controller(request.get_json())
+
+@app.get('/menus/all')
+def get_all_menus():
+    return get_all_menus_controller()
+
+@app.put('/menus/<menu_id>')
+def update_menu(menu_id: str):
+    return update_menu_by_id_controller(menu_id, request.get_json())
 
 @app.get('/menus')
 def get_menu():

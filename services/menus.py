@@ -4,6 +4,22 @@ from bson import ObjectId
 
 tb_name = 'menus'
 
+def update_menu_by_id(id: str, menu: dict):
+    db.get_collection(tb_name).update_one(
+        {
+            "_id": ObjectId(id)
+        }, 
+        {
+            "$set": {
+                "title": menu['title'],
+                "description": menu['description'],
+                "price": menu['price'],
+                "img": menu['img']
+            }
+        }
+    )
+    return menu_by_id(id)
+
 def menus(keyword: str):
     result = []
     data =  db.get_collection(tb_name).find({
