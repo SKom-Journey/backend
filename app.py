@@ -29,6 +29,7 @@ from controllers.delete_menu_controller import delete_menu_controller
 from controllers.create_menu_controller import create_menu_controller
 from controllers.get_all_menus_controller import get_all_menus_controller
 from controllers.update_menu_by_id_controller import update_menu_by_id_controller
+from controllers.get_menu_controller import get_menu_controller
 
 load_dotenv()
 
@@ -112,12 +113,16 @@ def create_menu():
 def get_all_menus():
     return get_all_menus_controller()
 
+@app.get('/menus/<menu_id>')
+def get_menu(menu_id: str):
+    return get_menu_controller(menu_id)
+
 @app.put('/menus/<menu_id>')
 def update_menu(menu_id: str):
     return update_menu_by_id_controller(menu_id, request.get_json())
 
 @app.get('/menus')
-def get_menu():
+def get_menus():
     return get_menus_controller(request.args.get('keyword', type=str))
 
 @app.post('/categories')
