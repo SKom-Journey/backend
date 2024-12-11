@@ -29,12 +29,18 @@ from controllers.delete_menu_controller import delete_menu_controller
 from controllers.create_menu_controller import create_menu_controller
 from controllers.get_all_menus_controller import get_all_menus_controller
 from controllers.update_menu_by_id_controller import update_menu_by_id_controller
+from controllers.register_oauth_user_controller import register_oauth_user_controller
+from controllers.delete_user_controller import delete_user_controller
 
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins=['http://localhost:5173'])
+
+@app.post('/oauth/<access_token>')
+def register_user_with_google(access_token: str):
+    return register_oauth_user_controller(access_token)
 
 @app.put('/carts/<cart_id>')
 def update_cart_note_by_id(cart_id: str):
@@ -51,6 +57,10 @@ def delete_cart():
 @app.post('/carts')
 def create_cart():
     return create_cart_controller(request.get_json())
+
+@app.delete('/users/<user_id>')
+def delete_user(user_id: str):
+    return delete_user_controller(user_id)
 
 @app.post('/auths/users/login')
 def login_user():
