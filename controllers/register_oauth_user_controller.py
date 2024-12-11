@@ -12,5 +12,4 @@ def register_oauth_user_controller(access_token: str):
             user['name'],
             True
         ))
-    
-    return response("Email Already Exist", "ERROR", True)
+    return response(user_by_email(user['email']))
