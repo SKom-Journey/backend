@@ -39,7 +39,7 @@ app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins=['http://localhost:5173'])
 
-@app.post('/oauth/<access_token>')
+@app.post('/oauths/google/<access_token>')
 def register_user_with_google(access_token: str):
     return register_oauth_user_controller(access_token)
 
