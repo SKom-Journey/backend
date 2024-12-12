@@ -37,7 +37,8 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:5173'])
+socketio = SocketIO(app, cors_allowed_origins=["http://localhost:5173", "https://ner-frontend-client.vercel.app"])
+
 
 @app.post('/oauths/google/<access_token>')
 def register_user_with_google(access_token: str):
@@ -157,4 +158,4 @@ def menu_recommendation(text, user_id):
     emit('menu_recommendation_response', recommendation)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, port=8000, host='0.0.0.0', allow_unsafe_werkzeug=True, ssl_context='adhoc')
+    socketio.run(app, port=8000, host='0.0.0.0')
