@@ -3,15 +3,22 @@ from bson import ObjectId
 from models.User import User
 from datetime import datetime
 import bcrypt
+from services.sessions import create_session
 
 tb_name = 'users'
 
-def create_user(email: str, password: str, name: str, with_google: bool):
+def create_user(email: str, password: str, name: str, with_google: bool, create_session: bool = False):
     salt = bcrypt.gensalt()
     hashed_password = None if len(password) == 0 else bcrypt.hashpw(password.encode(), salt)
     user_id = db.get_collection(tb_name).insert_one({"email": email, "password": hashed_password, "name": name, "with_google": with_google, "created_at": datetime.now()}).inserted_id
     user = db.get_collection(tb_name).find_one({"_id": ObjectId(user_id)})
+    
+    session = None
+    if create_session:
+        session = create_session(user_id, 'USER')
+
     return User(
+        session=session,
         id=str(user['_id']),
         email=user['email'],
         password=user['password'],

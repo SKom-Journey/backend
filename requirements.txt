@@ -6,3 +6,4 @@ flask-cors
 spacy
 pydantic
 bcrypt
+PyJWT
