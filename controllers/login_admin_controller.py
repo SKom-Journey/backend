@@ -13,7 +13,6 @@ def login_admin_controller(json: dict):
         session = create_session(user_id=admin['id'], type=UserType.ADMIN)
         return response(Admin(
             session=session,
-            id=admin['id'],
             password=admin['password'],
             username=admin['username'],
             created_at=admin['created_at'].isoformat(),

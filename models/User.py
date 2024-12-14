@@ -4,7 +4,6 @@ from models.Session import Session
 
 class User(BaseModel):
     id: str = Optional[str]
-    session: Session = Field(default=None)
     email: str = Field(...)
     password: str = Field(...)
     name: str = Field(...)

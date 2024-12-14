@@ -2,7 +2,6 @@ from flask import Flask, request
 from controllers.get_menu_recommendation_controller import get_menu_recommendation_controller
 from controllers.get_menus_controller import get_menus_controller
 from dotenv import load_dotenv
-from flask import Flask
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from controllers.get_user_chats_controller import get_user_chats_controller
@@ -32,13 +31,22 @@ from controllers.update_menu_by_id_controller import update_menu_by_id_controlle
 from controllers.register_oauth_user_controller import register_oauth_user_controller
 from controllers.delete_user_controller import delete_user_controller
 from controllers.get_menu_controller import get_menu_controller
+from controllers.get_profile_controller import get_profile_controller
+from controllers.refresh_session_controller import refresh_session_controller
 from configs.config import CORS_ALLOWED_ORIGINS
+from middleware.check_user_jwt import check_user_jwt
+from middleware.get_refresh_token import get_refresh_token
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=CORS_ALLOWED_ORIGINS, supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins=CORS_ALLOWED_ORIGINS)
+
+@app.get('/me')
+@check_user_jwt
+def get_profile(payload: dict):
+    return get_profile_controller(payload)
 
 @app.post('/oauths/google/<access_token>')
 def register_user_with_google(access_token: str):
@@ -75,6 +83,11 @@ def register_user():
 @app.post('/auths/admins/login')
 def login_admin():
     return login_admin_controller(request.get_json())
+
+@app.post('/auths/refresh')
+@get_refresh_token
+def refresh_token(refresh_token: str):
+    return refresh_session_controller(refresh_token)
 
 @app.put('/orders/<order_id>')
 def finish_order(order_id: str):
@@ -158,4 +171,4 @@ def menu_recommendation(text, user_id):
     emit('menu_recommendation_response', recommendation)
 
 if __name__ == '__main__':
-    socketio.run(app, port=8000, host='0.0.0.0')
+    socketio.run(app, debug=True, port=8000, host='0.0.0.0')

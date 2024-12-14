@@ -4,7 +4,6 @@ from models.Session import Session
 
 class Admin(BaseModel):
     id: str = Optional[str]
-    session: Optional[Session] = Field(default=None)
     username: str = Field(...)
     password: str = Field(...)
     created_at: str
