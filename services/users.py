@@ -52,3 +52,16 @@ def user_by_email(email: str):
         ).model_dump() 
     
     return None
+
+def update_user_name(id: str, name: str):
+    db.get_collection(tb_name).update_one(
+        {
+            "_id": ObjectId(id)
+        }, 
+        {
+            "$set": {
+                "name": name
+            }
+        }
+    )
+    return user_by_id(id)

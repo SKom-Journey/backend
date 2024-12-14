@@ -32,6 +32,7 @@ from controllers.register_oauth_user_controller import register_oauth_user_contr
 from controllers.delete_user_controller import delete_user_controller
 from controllers.get_menu_controller import get_menu_controller
 from controllers.get_profile_controller import get_profile_controller
+from controllers.update_user_name_controller import update_user_name_controller
 from controllers.refresh_session_controller import refresh_session_controller
 from configs.config import CORS_ALLOWED_ORIGINS
 from middleware.check_user_jwt import check_user_jwt
@@ -67,6 +68,10 @@ def delete_cart():
 @app.post('/carts')
 def create_cart():
     return create_cart_controller(request.get_json())
+
+@app.put('/users/<user_id>')
+def update_user_name(user_id: str):
+    return update_user_name_controller(user_id, request.get_json())
 
 @app.delete('/users/<user_id>')
 def delete_user(user_id: str):
@@ -171,4 +176,4 @@ def menu_recommendation(text, user_id):
     emit('menu_recommendation_response', recommendation)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, port=8000, host='0.0.0.0')
+    socketio.run(app, port=8000, host='0.0.0.0')
