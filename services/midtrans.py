@@ -1,85 +1,62 @@
-from configs.config import MT_CLIENT_ID, MT_SERVER_ID
-import requests
+from configs.config import MT_SERVER_ID
 from midtransclient import Snap
+from services.carts import get_carts_by_user_id
+from services.users import user_by_id
+from uuid import uuid4
+from utils.menu_detail_url import menu_detail_url
 
-endpoint = "https://app.sandbox.midtrans.com/snap/v1/transactions"
 snap = Snap(
     is_production=False,
     server_key=MT_SERVER_ID,
 )
 
-def create_snap():
+def create_transaction(user_id: str):
+    items = []
+    gross_amount = 0
+    carts = get_carts_by_user_id(user_id)
+    user = user_by_id(user_id)
+
+    for cart in carts:
+        price = cart['menu']['price'] * cart['quantity']
+        items.append({
+            "id": cart['menu']['id'],
+            "price": cart['menu']['price'],
+            "quantity": cart['quantity'],
+            "name": cart['menu']['title'],
+            "merchant_name": "Ryomu Restaurant",
+            "brand": "Ryomu Restaurant",
+            "url": menu_detail_url(cart['menu']['id']),
+            "category": "Food & Beverage"
+        })
+        gross_amount += price
+
     json = {
-    "transaction_details": {
-            "order_id": "ORDER-101",
-            "gross_amount": 10000
+        "transaction_details": {
+            "order_id": str(uuid4()),
+            "gross_amount": gross_amount
         },
-        "item_details": [
-            {
-                "id": "ITEM1",
-                "price": 10000,
-                "quantity": 1,
-                "name": "Midtrans Bear",
-                "brand": "Midtrans",
-                "category": "Toys",
-                "merchant_name": "Midtrans",
-                "url": "http://toko/toko1?item=abc"
-            }
-        ],
+        "item_details": items,
         "customer_details": {
-            "first_name": "TEST",
-            "last_name": "MIDTRANSER",
-            "email": "test@midtrans.com",
-            "phone": "+628123456",
-            "billing_address": {
-                "first_name": "TEST",
-                "last_name": "MIDTRANSER",
-                "email": "test@midtrans.com",
-                "phone": "081 2233 44-55",
-                "address": "Sudirman",
-                "city": "Jakarta",
-                "postal_code": "12190",
-                "country_code": "IDN"
-            },
-            "shipping_address": {
-                "first_name": "TEST",
-                "last_name": "MIDTRANSER",
-                "email": "test@midtrans.com",
-                "phone": "0 8128-75 7-9338",
-                "address": "Sudirman",
-                "city": "Jakarta",
-                "postal_code": "12190",
-                "country_code": "IDN"
-            }
+            "first_name": user['name'],
+            "last_name": "",
+            "email": user['email']
         },
         "enabled_payments": [
-            "credit_card", "cimb_clicks",
-            "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "permata_va",
-            "bca_va", "bni_va", "bri_va","cimb_va", "gopay", "indomaret",
-            "danamon_online", "akulaku", "shopeepay", "kredivo"
+            "credit_card", "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "bca_va", "bni_va", "bri_va", "gopay", "danamon_online", "shopeepay"
         ],
         "credit_card": {
             "secure": True,
             "channel": "migs",
             "bank": "bca",
             "installment": {
-            "required": False,
-            "terms": {
-                "bni": [3, 6, 12],
-                "mandiri": [3, 6, 12],
-                "cimb": [3],
-                "bca": [3, 6, 12],
-                "offline": [6, 12]
-            }
-            },
-            "whitelist_bins": [
-                "48111111",
-                "41111111"
-            ],
-                "dynamic_descriptor": {
-                "merchant_name" : "Fuji Apple Inc",
-                "city_name": "Jakarta",
-                "country_code": "ID"
+                "required": False,
+                "terms": {
+                    "bni": [3, 6, 12],
+                    "mandiri": [3, 6, 12],
+                    "cimb": [3],
+                    "bca": [3, 6, 12],
+                    "offline": [6, 12]
+                }
             }
         },
         "bca_va": {
@@ -106,13 +83,6 @@ def create_snap():
         "bri_va": {
             "va_number": "1234567891234"
         },
-        "cimb_va": {
-            "va_number": "1234567891234567"
-        },  
-        "permata_va": {
-            "va_number": "1234567890",
-            "recipient_name": "SUDARSONO"
-        },
         "shopeepay": {
             "callback_url": "http://shopeepay.com"
         },
@@ -124,9 +94,10 @@ def create_snap():
             "finish": "https://demo.midtrans.com"
         },
         "page_expiry": {
-            "duration": 1,
-            "unit": "hours"
+            "duration": 5,
+            "unit": "minutes"
         }
     }
     
     return snap.create_transaction(json)
+    # return json

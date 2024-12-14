@@ -45,7 +45,7 @@ app = Flask(__name__)
 CORS(app, origins=CORS_ALLOWED_ORIGINS, supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins=CORS_ALLOWED_ORIGINS)
 
-@app.post('/transaction')
+@app.post('/transactions')
 def create_transaction():
     return create_transaction_controller(request.get_json())
 
