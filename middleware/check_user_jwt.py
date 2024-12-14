@@ -13,8 +13,6 @@ def check_user_jwt(f):
         try:
             decoded_token = decode(token, SESSION_SECRET, algorithms=["HS256"])
             payload = decoded_token
-            print(token)
-            print(decoded_token)
         except ExpiredSignatureError:
             return response(None, 'TOKEN_EXPIRED')
         except InvalidTokenError:

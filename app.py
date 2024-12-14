@@ -34,7 +34,8 @@ from controllers.get_menu_controller import get_menu_controller
 from controllers.get_profile_controller import get_profile_controller
 from controllers.update_user_name_controller import update_user_name_controller
 from controllers.refresh_session_controller import refresh_session_controller
-from configs.config import CORS_ALLOWED_ORIGINS
+from controllers.create_transaction_controller import create_transaction_controller
+from configs.config import CORS_ALLOWED_ORIGINS, DEBUG_MODE
 from middleware.check_user_jwt import check_user_jwt
 from middleware.get_refresh_token import get_refresh_token
 
@@ -43,6 +44,10 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, origins=CORS_ALLOWED_ORIGINS, supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins=CORS_ALLOWED_ORIGINS)
+
+@app.post('/transaction')
+def create_transaction():
+    return create_transaction_controller(request.get_json())
 
 @app.get('/me')
 @check_user_jwt
@@ -176,4 +181,4 @@ def menu_recommendation(text, user_id):
     emit('menu_recommendation_response', recommendation)
 
 if __name__ == '__main__':
-    socketio.run(app, port=8000, host='0.0.0.0')
+    socketio.run(app, debug=DEBUG_MODE, port=8000, host='0.0.0.0')
