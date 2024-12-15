@@ -26,6 +26,7 @@ from controllers.finish_order_controller import finish_order_controller
 from controllers.delete_user_chats_controller import delete_user_chats_controller
 from controllers.delete_menu_controller import delete_menu_controller
 from controllers.create_menu_controller import create_menu_controller
+from controllers.get_menus_not_in_category_controller import get_menus_not_in_category_controller
 from controllers.get_all_menus_controller import get_all_menus_controller
 from controllers.update_menu_by_id_controller import update_menu_by_id_controller
 from controllers.register_oauth_user_controller import register_oauth_user_controller
@@ -35,6 +36,7 @@ from controllers.get_profile_controller import get_profile_controller
 from controllers.update_user_name_controller import update_user_name_controller
 from controllers.refresh_session_controller import refresh_session_controller
 from controllers.create_transaction_controller import create_transaction_controller
+from controllers.get_menus_by_category_controller import get_menus_by_category_controller
 from controllers.get_categories_controller import get_categories_controller
 from controllers.update_category_by_id_controller import update_category_by_id_controller
 from configs.config import CORS_ALLOWED_ORIGINS, DEBUG_MODE
@@ -157,13 +159,21 @@ def get_menu(menu_id: str):
 def update_menu(menu_id: str):
     return update_menu_by_id_controller(menu_id, request.get_json())
 
+@app.get('/menus/categories/<category_id>')
+def get_menus_by_category_id(category_id: str):
+    return get_menus_by_category_controller(category_id)
+
+@app.get('/menus/outside-categories/<category_id>')
+def get_menus_not_in_category(category_id: str):
+    return get_menus_not_in_category_controller(category_id)
+
 @app.get('/menus')
 def get_menus():
     return get_menus_controller(request.args.get('keyword', type=str))
 
 @app.delete('/categories/<category_id>')
 def delete_category_by_id(category_id: str):
-    return create_category_controller(request.get_json())
+    return delete_category_controller(category_id)
 
 @app.put('/categories/<category_id>')
 def update_category_by_id(category_id: str):

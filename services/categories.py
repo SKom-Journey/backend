@@ -2,6 +2,7 @@ from utils.mongodb import db
 from models.Category import Category
 from bson import ObjectId
 from datetime import datetime
+from services.menu_categories import get_menu_category_by_category_id
 
 tb_name = 'categories'
 
@@ -18,7 +19,9 @@ def get_category_by_name(name):
     category = db.get_collection(tb_name).find_one({"name": name})
     if category == None:
         return None
+    menus = get_menu_category_by_category_id(str(category['_id']))
     return Category(
+        total_menu=len(menus),
         name = str(category['name']),
         id = str(category['_id']),
         created_at = category['created_at'].isoformat(),
@@ -28,7 +31,9 @@ def get_category_by_id(id: str):
     category = db.get_collection(tb_name).find_one({"_id": ObjectId(id)})
     if category == None:
         return None
+    menus = get_menu_category_by_category_id(str(category['_id']))
     return Category(
+        total_menu=len(menus),
         name = str(category['name']),
         id = str(category['_id']),
         created_at = category['created_at'].isoformat(),
@@ -50,8 +55,10 @@ def update_category_by_id(id: str, name: str):
 def get_categories():
     result = []
     for category in db.get_collection(tb_name).find():
+        menus = get_menu_category_by_category_id(str(category['_id']))
         result.append(
             Category(
+                total_menu=len(menus),
                 name = str(category['name']),
                 id = str(category['_id']),
                 created_at = category['created_at'].isoformat(),
