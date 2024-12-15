@@ -24,6 +24,29 @@ def get_category_by_name(name):
         created_at = category['created_at'].isoformat(),
     ).model_dump()
 
+def get_category_by_id(id: str):
+    category = db.get_collection(tb_name).find_one({"_id": ObjectId(id)})
+    if category == None:
+        return None
+    return Category(
+        name = str(category['name']),
+        id = str(category['_id']),
+        created_at = category['created_at'].isoformat(),
+    ).model_dump()
+
+def update_category_by_id(id: str, name: str):
+    db.get_collection(tb_name).update_one(
+        {
+            "_id": ObjectId(id)
+        }, 
+        {
+            "$set": {
+                "name": name
+            }
+        }
+    )
+    return get_category_by_id(id)
+
 def get_categories():
     result = []
     for category in db.get_collection(tb_name).find():

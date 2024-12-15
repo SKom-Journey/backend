@@ -35,6 +35,8 @@ from controllers.get_profile_controller import get_profile_controller
 from controllers.update_user_name_controller import update_user_name_controller
 from controllers.refresh_session_controller import refresh_session_controller
 from controllers.create_transaction_controller import create_transaction_controller
+from controllers.get_categories_controller import get_categories_controller
+from controllers.update_category_by_id_controller import update_category_by_id_controller
 from configs.config import CORS_ALLOWED_ORIGINS, DEBUG_MODE
 from middleware.check_user_jwt import check_user_jwt
 from middleware.get_refresh_token import get_refresh_token
@@ -158,6 +160,18 @@ def update_menu(menu_id: str):
 @app.get('/menus')
 def get_menus():
     return get_menus_controller(request.args.get('keyword', type=str))
+
+@app.delete('/categories/<category_id>')
+def delete_category_by_id(category_id: str):
+    return create_category_controller(request.get_json())
+
+@app.put('/categories/<category_id>')
+def update_category_by_id(category_id: str):
+    return update_category_by_id_controller(category_id, request.get_json())
+
+@app.get('/categories')
+def get_categories():
+    return get_categories_controller()
 
 @app.post('/categories')
 def create_category():
