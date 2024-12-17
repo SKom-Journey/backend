@@ -17,11 +17,13 @@ def get_menus_controller(keyword: str):
             menu_ids.append(menu_categories['menu_id'])
             stored_menu_ids.append(menu_categories['menu_id'])
 
-        result.append(
-            MenuList(
-                category_name = category['name'],
-                items = menus_by_ids(menu_ids)
-            ).model_dump()
+        items = menus_by_ids(menu_ids)
+        if len(items) > 0:
+            result.append(
+                MenuList(
+                    category_name = category['name'],
+                    items = items
+                ).model_dump()
         )
 
     result.append(
