@@ -154,13 +154,13 @@ def get_menu(menu_id: str):
 def update_menu(menu_id: str):
     return update_menu_by_id_controller(menu_id, request.get_json())
 
-# @app.get('/menus/categories/<category_id>')
-# def get_menus_by_category_id(category_id: str):
-#     return get_menus_by_category_controller(category_id)
+@app.get('/menus/categories/<category_id>')
+def get_menus_by_category_id(category_id: str):
+    return get_menus_by_category_controller(category_id)
 
-# @app.get('/menus/outside-categories/<category_id>')
-# def get_menus_not_in_category(category_id: str):
-#     return get_menus_not_in_category_controller(category_id)
+@app.get('/menus/outside-categories/<category_id>')
+def get_menus_not_in_category(category_id: str):
+    return get_menus_not_in_category_controller(category_id)
 
 @app.get('/menus')
 def get_menus():

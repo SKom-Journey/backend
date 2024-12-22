@@ -13,7 +13,7 @@ def update_menu_by_id(id: str, menu: dict):
             "$set": {
                 "title": menu['title'],
                 "description": menu['description'],
-                "price": menu['price'],
+                "price": int(menu['price']),
                 "img": menu['img']
             }
         }
@@ -45,7 +45,7 @@ def menus(keyword: str):
                 id=str(menu['_id']),
                 title=menu['title'],
                 description=menu['description'],
-                price=menu['price'],
+                price=int(menu['price']),
                 img=menu['img']
             )
             .model_dump()
@@ -60,7 +60,7 @@ def find_by_entities(entities: dict):
                 id=str(menu['_id']),
                 title=menu['title'],
                 description=menu['description'],
-                price=menu['price'],
+                price=int(menu['price']),
                 img=menu['img']
             )
             .model_dump()
@@ -74,7 +74,7 @@ def create_menu(title: str, description: str, img: str, price: int):
         id=str(menu['_id']),
         title=menu['title'],
         img=menu['img'],
-        price=menu['price'],
+        price=int(menu['price']),
         description=menu['description'],
     ).model_dump() 
 
@@ -84,7 +84,7 @@ def menu_by_id(id: str):
         id=str(data['_id']),
         title=data['title'],
         description=data['description'],
-        price=data['price'],
+        price=int(data['price']),
         img=data['img']
     ).model_dump()
 
@@ -105,7 +105,7 @@ def menus_by_ids(ids: list[str]):
                 id=str(menu['_id']),
                 title=menu['title'],
                 description=menu['description'],
-                price=menu['price'],
+                price=int(menu['price']),
                 img=menu['img']
             )
             .model_dump()
@@ -125,7 +125,7 @@ def menus_by_not_in_ids(ids: list[str]):
                 id=str(menu['_id']),
                 title=menu['title'],
                 description=menu['description'],
-                price=menu['price'],
+                price=int(menu['price']),
                 img=menu['img']
             )
             .model_dump()
