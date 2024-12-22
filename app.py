@@ -27,7 +27,6 @@ from controllers.delete_user_chats_controller import delete_user_chats_controlle
 from controllers.delete_menu_controller import delete_menu_controller
 from controllers.create_menu_controller import create_menu_controller
 from controllers.get_menus_not_in_category_controller import get_menus_not_in_category_controller
-from controllers.get_all_menus_controller import get_all_menus_controller
 from controllers.update_menu_by_id_controller import update_menu_by_id_controller
 from controllers.register_oauth_user_controller import register_oauth_user_controller
 from controllers.delete_user_controller import delete_user_controller
@@ -139,17 +138,13 @@ def create_qr():
 def delete_qr(qr_id: str):
     return delete_qr_controller(qr_id)
 
-@app.delete('/menus//<menu_id>')
+@app.delete('/menus/<menu_id>')
 def delete_menu(menu_id: str):
     return delete_menu_controller(menu_id)
 
 @app.post('/menus')
 def create_menu():
     return create_menu_controller(request.get_json())
-
-@app.get('/menus/all')
-def get_all_menus():
-    return get_all_menus_controller()
 
 @app.get('/menus/<menu_id>')
 def get_menu(menu_id: str):
