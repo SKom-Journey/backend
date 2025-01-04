@@ -37,6 +37,7 @@ from controllers.refresh_session_controller import refresh_session_controller
 from controllers.create_transaction_controller import create_transaction_controller
 from controllers.get_menus_by_category_controller import get_menus_by_category_controller
 from controllers.get_categories_controller import get_categories_controller
+from controllers.revoke_session_controller import revoke_session_controller
 from controllers.update_category_by_id_controller import update_category_by_id_controller
 from configs.config import CORS_ALLOWED_ORIGINS, DEBUG_MODE
 from middleware.check_user_jwt import check_user_jwt
@@ -96,6 +97,11 @@ def register_user():
 @app.post('/auths/admins/login')
 def login_admin():
     return login_admin_controller(request.get_json())
+
+@app.delete('/auths/revoke')
+@get_refresh_token
+def revoke_token(refresh_token: str):
+    return revoke_session_controller(refresh_token)
 
 @app.post('/auths/refresh')
 @get_refresh_token
