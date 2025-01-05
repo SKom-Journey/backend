@@ -126,6 +126,7 @@
 
     ],
     "ner":[
+      "ALLERGY_SYMPTOM",
       "ALLERGY_TYPE",
       "CARDINAL",
       "DATE",

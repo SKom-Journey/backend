@@ -2,7 +2,7 @@ import spacy
 
 def get_entities(text: str):
     nlp_ner = spacy.load("lib/restaurant_ner_recommendation")
-    doc = nlp_ner(text)
+    doc = nlp_ner(text.lower())
 
     entities = {}
 

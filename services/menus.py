@@ -1,6 +1,7 @@
 from utils.mongodb import db
 from models.Menu import Menu
 from bson import ObjectId
+from utils.construct_menu_entity import construct_menu_entity
 
 tb_name = 'menus'
 
@@ -68,7 +69,9 @@ def find_by_entities(entities: dict):
     return result
 
 def create_menu(title: str, description: str, img: str, price: int):
-    menu_id = db.get_collection(tb_name).insert_one({"title": title, "description": description, "img": img, "price": price}).inserted_id
+    entities = construct_menu_entity(title, description)
+    print(entities)
+    menu_id = db.get_collection(tb_name).insert_one({"title": title, "description": description, "img": img, "price": price, **entities}).inserted_id
     menu = db.get_collection(tb_name).find_one({"_id": ObjectId(menu_id)})
     return Menu(
         id=str(menu['_id']),
