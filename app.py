@@ -45,7 +45,7 @@ from middleware.get_refresh_token import get_refresh_token
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='img')
 CORS(app, origins=CORS_ALLOWED_ORIGINS, supports_credentials=True)
 socketio = SocketIO(app, cors_allowed_origins=CORS_ALLOWED_ORIGINS)
 
@@ -150,7 +150,7 @@ def delete_menu(menu_id: str):
 
 @app.post('/menus')
 def create_menu():
-    return create_menu_controller(request.get_json())
+    return create_menu_controller(request.form, request.files.get('img'))
 
 @app.get('/menus/<menu_id>')
 def get_menu(menu_id: str):

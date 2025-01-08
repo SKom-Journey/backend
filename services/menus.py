@@ -71,7 +71,7 @@ def find_by_entities(entities: dict):
 def create_menu(title: str, description: str, img: str, price: int):
     entities = construct_menu_entity(title, description)
     print(entities)
-    menu_id = db.get_collection(tb_name).insert_one({"title": title, "description": description, "img": img, "price": price, **entities}).inserted_id
+    menu_id = db.get_collection(tb_name).insert_one({"title": title, "description": description, "img": img, "price": int(price), **entities}).inserted_id
     menu = db.get_collection(tb_name).find_one({"_id": ObjectId(menu_id)})
     return Menu(
         id=str(menu['_id']),

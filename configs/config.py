@@ -9,3 +9,4 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:5174", "http://localhost:5173", "https
 MT_SERVER_ID = dotenv_values(".env")['MT_SERVER_ID']
 DEBUG_MODE = True if dotenv_values(".env")['DEBUG_MODE'] == "true" else False
 CLIENT_WEB_URL = 'https://ner-frontend-client.vercel.app'
+IMG_URL = dotenv_values(".env")['IMG_URL']
