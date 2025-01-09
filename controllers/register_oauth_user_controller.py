@@ -10,13 +10,14 @@ def register_oauth_user_controller(access_token: str):
     user = get_google_info(access_token)
     check_email_exist = user_by_email(user['email'])
     if check_email_exist == None:
-        res = make_response(response(create_user(
+        user = create_user(
             user['email'],
             user['email'],
             user['name'],
             True,
-            True
-        )))
+        )
+        res = make_response(response(user))
+        session = create_session(user_id=user['id'], type=UserType.USER)
         set_session(res, session)
         return res
     
