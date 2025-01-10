@@ -158,7 +158,7 @@ def get_menu(menu_id: str):
 
 @app.put('/menus/<menu_id>')
 def update_menu(menu_id: str):
-    return update_menu_by_id_controller(menu_id, request.get_json())
+    return update_menu_by_id_controller(menu_id, request.form, request.files.get('img'))
 
 @app.get('/menus/categories/<category_id>')
 def get_menus_by_category_id(category_id: str):
