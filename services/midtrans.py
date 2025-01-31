@@ -42,47 +42,8 @@ def create_transaction(user_id: str):
             "email": user['email']
         },
         "enabled_payments": [
-            "credit_card", "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "bca_va", "bni_va", "bri_va", "gopay", "danamon_online", "shopeepay"
+            "gopay", "shopeepay"
         ],
-        "credit_card": {
-            "secure": True,
-            "channel": "migs",
-            "bank": "bca",
-            "installment": {
-                "required": False,
-                "terms": {
-                    "bni": [3, 6, 12],
-                    "mandiri": [3, 6, 12],
-                    "cimb": [3],
-                    "bca": [3, 6, 12],
-                    "offline": [6, 12]
-                }
-            }
-        },
-        "bca_va": {
-            "va_number": "12345678911",
-            "sub_company_code": "00000",
-            "free_text": {
-                "inquiry": [
-                    {
-                        "en": "text in English",
-                        "id": "text in Bahasa Indonesia"
-                    }
-                ],
-                "payment": [
-                    {
-                        "en": "text in English",
-                        "id": "text in Bahasa Indonesia"
-                    }
-                ]
-            }
-        },
-        "bni_va": {
-            "va_number": "12345678"
-        },
-        "bri_va": {
-            "va_number": "1234567891234"
-        },
         "shopeepay": {
             "callback_url": "http://shopeepay.com"
         },
