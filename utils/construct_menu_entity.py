@@ -7,12 +7,10 @@ def construct_menu_entity(title: str, description: str) -> dict:
 
     for key, values in entities_from_title.items():
         if values:
-            print(key)
             result[key] = values
     
     for key, values in entities_from_description.items():
         if values:
-            print(key)
             if key in result:
                 result[key].extend(values)
             else:
